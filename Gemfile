@@ -29,3 +29,6 @@ gem 'binding_of_caller'
 
 # Parse RSS Feeds
 gem 'feedjira'
+
+# Fetch Feeds
+gem 'httparty'
