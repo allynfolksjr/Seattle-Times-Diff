@@ -38,7 +38,8 @@ class ArticleUpdater
     else
       article_object.first_appearance = true
     end
-    article_object.save!
+
+    article_object.save! unless recent_article_history.created_at == feed.last_built
   end
 
   def feed
