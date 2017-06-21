@@ -21,7 +21,8 @@ class ArticleUpdater
     article_object = Article.new(
       title: article.title,
       description: summary,
-      created_at: article.published,
+      created_at: feed.last_built,
+      updated_at: article.published,
       guid: article.entry_id
     )
 
@@ -39,7 +40,13 @@ class ArticleUpdater
       article_object.first_appearance = true
     end
 
-    article_object.save! unless recent_article_history.created_at == feed.last_built
+    # binding.pry
+
+    if recent_article_history
+      article_object.save! unless recent_article_history.created_at == Time.zone.parse(feed.last_built)
+    else
+      article_object.save!
+    end
   end
 
   def feed
