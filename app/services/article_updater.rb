@@ -14,7 +14,9 @@ class ArticleUpdater
         article_guids << article.entry_id
       end
     end
-    FeedMailer.notify_on_refresh(article_guids, feed).deliver
+    if article_guids.present?
+      FeedMailer.notify_on_refresh(article_guids, feed).deliver
+    end
   end
 
   private
