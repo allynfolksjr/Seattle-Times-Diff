@@ -8,8 +8,11 @@ class ArticleUpdater
   def retrieve_and_update
     article_guids = []
     feed.entries.each do |article|
-      article_guids << article.entry_id
-      persist_article(article)
+      result = persist_article(article)
+      # We only care if it's new or updated
+      if result
+        article_guids << article.entry_id
+      end
     end
     FeedMailer.notify_on_refresh(article_guids, feed).deliver
   end
@@ -40,7 +43,11 @@ class ArticleUpdater
       article_object.first_appearance = true
     end
 
-    article.object.save! if article_object.updated || article_object.first_appearance
+    if article_object.updated || article_object.first_appearance
+      article.object.save!
+    else
+      nil
+    end
   end
 
   def feed
