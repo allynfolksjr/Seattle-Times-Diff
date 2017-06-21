@@ -6,33 +6,39 @@ class ArticleUpdater
   end
 
   def retrieve_and_update
+    article_guids = []
     feed.entries.each do |article|
-      article_record = Article.where(guid: article.entry_id).order('id desc').first
-      summary =  sanitize(article.summary, tags: [])
-      if article_record
-        if article_record.title != article.title
-          puts "--> Title changed‘’!"
-          puts "--> Old title: #{article_record.title}. New title: #{article.title}"
-        end
-        if article_record.description != summary
-          puts "--> Summary changed!"
-          puts "--> Old summary: #{article_record.description}. New title: #{summary}"
-        end
-      end
+      article_guids << article.entry_id
       persist_article(article)
     end
-    nil
+    FeedMailer.notify_on_refresh(article_guids, feed).deliver
   end
 
   private
 
   def persist_article(article)
-    Article.create!(
+    summary = sanitize(article.summary, tags: [])
+    article_object = Article.new(
       title: article.title,
-      description: sanitize(article.summary, tags: []),
+      description: summary,
       created_at: article.published,
       guid: article.entry_id
     )
+
+    recent_article_history = Article.where(guid: article.entry_id).order('id desc').first
+    # This has been seen before. Let's check if it was updated
+    if recent_article_history.present?
+      if recent_article_history.title != article.title
+        article_object.updated = true
+      end
+      if recent_article_history.description != summary
+        article_object.updated = true
+      end
+    # New article
+    else
+      article_object.first_appearance = true
+    end
+    article_object.save!
   end
 
   def feed

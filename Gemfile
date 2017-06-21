@@ -27,6 +27,9 @@ gem 'awesome_print'
 gem 'pry'
 gem 'binding_of_caller'
 
+# Open emails in browser when in development
+gem "letter_opener", :group => :development
+
 # Parse RSS Feeds
 gem 'feedjira'
 

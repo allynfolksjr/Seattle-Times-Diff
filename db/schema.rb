@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620020221) do
+ActiveRecord::Schema.define(version: 20170621023918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,8 +20,10 @@ ActiveRecord::Schema.define(version: 20170620020221) do
     t.string   "title"
     t.string   "description"
     t.integer  "author_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "updated",          default: false
+    t.boolean  "first_appearance", default: false
     t.index ["author_id"], name: "index_articles_on_author_id", using: :btree
     t.index ["guid"], name: "index_articles_on_guid", using: :btree
   end

@@ -1,0 +1,34 @@
+Seattle Times Local News Feed Refresh
+=====================================
+
+Feed built at: <%= @feed.last_built %>
+
+
+
+<% @article_guids.each do |article_guid| %>
+  <% all_articles = Article.where(guid: article_guid).order('id desc') %>
+  <% article = all_articles.last %>
+<%= article.title %>
+<%= "=" * article.title.size %>
+
+<%= article.guid %>
+
+Title History
+-------------
+<% all_articles.each do |historic_article| %>
+<% next unless historic_article.updated || historic_article.first_appearance %>
+- <%= historic_article.title %> (<%= historic_article.created_at %>)
+<% end %>
+
+Description History
+-------------------
+
+<% all_articles.each do |historic_article| %>
+<% next unless historic_article.updated || historic_article.first_appearance %>
+- <%= historic_article.description %> (<%= historic_article.created_at %>)
+<% end %>
+
+
+
+
+<% end %>
