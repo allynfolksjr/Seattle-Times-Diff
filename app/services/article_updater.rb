@@ -40,13 +40,7 @@ class ArticleUpdater
       article_object.first_appearance = true
     end
 
-    # binding.pry
-
-    if recent_article_history
-      article_object.save! unless recent_article_history.created_at == Time.zone.parse(feed.last_built)
-    else
-      article_object.save!
-    end
+    article.object.save! if article_object.updated || article_object.first_appearance
   end
 
   def feed
