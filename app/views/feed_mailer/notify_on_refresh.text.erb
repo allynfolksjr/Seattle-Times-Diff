@@ -11,28 +11,22 @@ Articles in database: <%= Article.all.size %>
   <% article = all_articles.last %>
   <% next unless article.updated || article.first_appearance %>
 
-<%= article.title %><%= " - NEW ARTICLE" if article.first_appearance %><%= " - UPDATED ARTICLE" if article.updated %>
-<%= "=" * article.title.size %>
-
+– <%= article.title %><%= " - NEW ARTICLE" if article.first_appearance %><%= " - UPDATED ARTICLE" if article.updated %>
+Feed Build: <%= article.created_at %> / Article PubTime: <%= article.updated_at %>
 <%= article.guid %>
 
-<% if article.first_appearance %>
-<%= article.title %>
-
-<%= article.description %>
-<% else %>
-
+<% unless article.first_appearance %>
 Title History
 -------------
 <% all_articles.each do |historic_article| %>
-- <%= historic_article.title %> (<%= historic_article.created_at %>)
+- <%= historic_article.title %> (Feed Build: <%= article.created_at %> / Article PubTime: <%= article.updated_at %>)
 <% end %>
 
 Description History
 -------------------
 
 <% all_articles.each do |historic_article| %>
-- <%= historic_article.description %> (<%= historic_article.created_at %>)
+- <%= historic_article.description %> (Feed Build: <%= historic_article.created_at %> / Article PubTime: <%= historic_article.updated_at %>)
 <% end %>
 
 <% end %>
