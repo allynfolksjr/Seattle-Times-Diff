@@ -44,7 +44,7 @@ class ArticleUpdater
     end
 
     if article_object.updated || article_object.first_appearance
-      article.object.save!
+      article_object.save!
     else
       nil
     end
