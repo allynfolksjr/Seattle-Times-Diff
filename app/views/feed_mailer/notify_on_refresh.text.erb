@@ -7,7 +7,7 @@ Articles in database: <%= Article.all.size %>
 
 <% @article_guids.each do |article_guid| %>
   <% all_articles = Article.where(guid: article_guid).order('id desc') %>
-  <% article = all_articles.last %>
+  <% article = all_articles.first %>
   <% next unless article.updated || article.first_appearance %>
 
 – <%= article.title %><%= " - NEW ARTICLE" if article.first_appearance %><%= " - UPDATED ARTICLE" if article.updated %>
